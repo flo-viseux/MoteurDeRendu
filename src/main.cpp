@@ -22,13 +22,18 @@ int main()
     },
     }};
 
+    auto const shader = gl::Shader{{
+    .vertex   = gl::ShaderSource::File{"res/vertex.glsl"},
+    .fragment = gl::ShaderSource::File{"res/fragment.glsl"},
+    }};
+
     while (gl::window_is_open())
     {
         // Rendu à chaque frame
         glClearColor(0.1f, 0.1f, 0.15f, 1.f); // Choisis la couleur à utiliser. Les paramètres sont R, G, B, A avec des valeurs qui vont de 0 à 1
         glClear(GL_COLOR_BUFFER_BIT); // Exécute concrètement l'action d'appliquer sur tout l'écran la couleur choisie au-dessus
 
-        gl::bind_default_shader(); // On a besoin qu'un shader soit bind (i.e. "actif") avant de draw(). On en reparle dans la section d'après.
+        shader.bind();
         rectangle_mesh.draw();
     }
 }
