@@ -2,13 +2,14 @@
 
 layout(location = 0) in vec2 in_position;
 
-float xOffset = .5f;
-float yOffset = .5f; 
-vec2 pos = vec2(in_position + vec2(xOffset, yOffset));
-
+uniform float xOffset;
+uniform float yOffset;
 uniform float aspect_ratio;
+uniform float time;
+
+vec2 pos = vec2(in_position.x + xOffset, in_position.y + yOffset);
 
 void main()
 {
-    gl_Position = vec4(pos.x / aspect_ratio, pos.y, 0., 1.);
+    gl_Position = vec4((pos.x / aspect_ratio) + cos(time), pos.y + sin(time), 0., 1.);
 }

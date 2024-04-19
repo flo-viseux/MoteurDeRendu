@@ -34,7 +34,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT); // Exécute concrètement l'action d'appliquer sur tout l'écran la couleur choisie au-dessus
 
         shader.bind();
+        shader.set_uniform("xOffset", 0.f);
+        shader.set_uniform("yOffset", 0.f);
         shader.set_uniform("aspect_ratio", gl::framebuffer_aspect_ratio());
+        shader.set_uniform("time", gl::time_in_seconds());
         rectangle_mesh.draw();
     }
 }
