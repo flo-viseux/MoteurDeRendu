@@ -11,5 +11,5 @@ vec2 pos = vec2(in_position.x + xOffset, in_position.y + yOffset);
 
 void main()
 {
-    gl_Position = vec4((pos.x / aspect_ratio) + cos(time), pos.y + sin(time), 0., 1.);
+    gl_Position = vec4((pos.x / aspect_ratio) + cos(time) / 2, pos.y + sin(time) / 2, 0., 1.);
 }

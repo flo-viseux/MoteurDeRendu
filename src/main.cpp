@@ -6,6 +6,9 @@ int main()
     gl::init("TPs de Rendering"); // On crée une fenêtre et on choisit son nom
     gl::maximize_window(); // On peut la maximiser si on veut
 
+    glEnable(GL_BLEND);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE); // On peut configurer l'équation qui mélange deux couleurs, comme pour faire différents blend mode dans Photoshop. Cette équation-ci donne le blending "normal" entre pixels transparents.
+
     auto const rectangle_mesh = gl::Mesh{{
     .vertex_buffers = {{
         .layout = {gl::VertexAttribute::Position2D{0}},
@@ -22,22 +25,48 @@ int main()
     },
     }};
 
+    auto const big_rectangle_mesh = gl::Mesh{{
+    .vertex_buffers = {{
+        .layout = {gl::VertexAttribute::Position2D{1}},
+        .data   = {
+            -1.f, -1.f, // Position2D du 1er sommet
+            +1.f, -1.f, // Position2D du 2ème sommet
+            +1.f, +1.f, // Position2D du 3ème sommet
+            -1.f, +1.f  // Position2D du 4ème sommet
+        },
+    }},
+    .index_buffer   = {
+        0, 1, 2, // Indices du premier triangle : on utilise le 1er, 2ème et 3ème sommet
+        0, 2, 3  // Indices du deuxième triangle : on utilise le 1er, 3ème et 4ème sommet
+    },
+    }};
+
     auto const shader = gl::Shader{{
     .vertex   = gl::ShaderSource::File{"res/vertex.glsl"},
     .fragment = gl::ShaderSource::File{"res/fragment.glsl"},
+    }};
+
+    auto const shadowMask = gl::Shader{{
+    .vertex   = gl::ShaderSource::File{"res/shadowMaskVertex.glsl"},
+    .fragment = gl::ShaderSource::File{"res/shadowMaskFragment.glsl"},
     }};
 
     while (gl::window_is_open())
     {
         // Rendu à chaque frame
         glClearColor(0.1f, 0.1f, 0.15f, 1.f); // Choisis la couleur à utiliser. Les paramètres sont R, G, B, A avec des valeurs qui vont de 0 à 1
-        glClear(GL_COLOR_BUFFER_BIT); // Exécute concrètement l'action d'appliquer sur tout l'écran la couleur choisie au-dessus
+        //glClear(GL_COLOR_BUFFER_BIT); // Exécute concrètement l'action d'appliquer sur tout l'écran la couleur choisie au-dessus
 
         shader.bind();
         shader.set_uniform("xOffset", 0.f);
         shader.set_uniform("yOffset", 0.f);
         shader.set_uniform("aspect_ratio", gl::framebuffer_aspect_ratio());
         shader.set_uniform("time", gl::time_in_seconds());
+
         rectangle_mesh.draw();
+
+        shadowMask.bind();
+
+        big_rectangle_mesh.draw();
     }
 }
