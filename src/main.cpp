@@ -6,6 +6,7 @@ int main()
     // Initialisation
     gl::init("TPs de Rendering"); // On crée une fenêtre et on choisit son nom
     gl::maximize_window(); // On peut la maximiser si on veut
+    glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_BLEND);
     glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE); // On peut configurer l'équation qui mélange deux couleurs, comme pour faire différents blend mode dans Photoshop. Cette équation-ci donne le blending "normal" entre pixels transparents.
@@ -22,10 +23,10 @@ int main()
             +1.f, +1.f, -1.f,// 2
             -1.f, +1.f, -1.f, // 3
 
-            -1.f, -1.f, +1.f, // 4
-            +1.f, -1.f, +1.f,// 5
-            +1.f, +1.f, +1.f,// 6
-            -1.f, +1.f, +1.f  // 7
+            -1.f, -1.f, 1.f, // 0
+            +1.f, -1.f, 1.f,// 1
+            +1.f, +1.f, 1.f,// 2
+            -1.f, +1.f, 1.f, // 3
         },
     }},
     .index_buffer   = {
@@ -50,8 +51,8 @@ int main()
         1, 6, 5,
 
         // right
-        0, 3, 7,
-        0, 7, 2
+        0, 4, 7,
+        0, 7, 3,
     },
     }};
 
@@ -65,6 +66,7 @@ int main()
         // Rendu à chaque frame
         glClearColor(0.5f, 0.5f, 0.7f, 1.f); // Choisis la couleur à utiliser. Les paramètres sont R, G, B, A avec des valeurs qui vont de 0 à 1
         glClear(GL_COLOR_BUFFER_BIT); // Exécute concrètement l'action d'appliquer sur tout l'écran la couleur choisie au-dessus
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Vient remplacer glClear(GL_COLOR_BUFFER_BIT);
 
         rectangle_mesh.draw();
 
