@@ -3,7 +3,12 @@
         "algorithm": "cpp",
         "xiosbase": "cpp",
         "xlocale": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp"
     },
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "C_Cpp.errorSquiggles": "disabled"
 }
