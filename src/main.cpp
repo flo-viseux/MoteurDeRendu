@@ -16,17 +16,17 @@ int main()
     
     auto const rectangle_mesh = gl::Mesh{{
     .vertex_buffers = {{
-        .layout = {gl::VertexAttribute::Position3D{0}},
+        .layout = {gl::VertexAttribute::Position2D{0}, gl::VertexAttribute::UV{1}},
         .data   = {
-            -1.f, -1.f, -1.f, // 0
-            +1.f, -1.f, -1.f,// 1
-            +1.f, +1.f, -1.f,// 2
-            -1.f, +1.f, -1.f, // 3
+            -2.f, -2.f, 0.f, 0.f,// -1.f, // 0
+            +2.f, -2.f, 1.f, 0.f,// -1.f,// 1
+            +2.f, +2.f, 1.f, 1.f,// -1.f,// 2
+            -2.f, +2.f, 0.f, 1.f,// -1.f, // 3
 
-            -1.f, -1.f, 1.f, // 0
-            +1.f, -1.f, 1.f,// 1
-            +1.f, +1.f, 1.f,// 2
-            -1.f, +1.f, 1.f, // 3
+            //-1.f, -1.f, 1.f, // 0
+            //+1.f, -1.f, 1.f,// 1
+            //+1.f, +1.f, 1.f,// 2
+            //-1.f, +1.f, 1.f, // 3
         },
     }},
     .index_buffer   = {
@@ -35,26 +35,40 @@ int main()
         0, 2, 3,
 
         // top
-        4, 5, 6,
-        4, 6, 7,
+        //4, 5, 6,
+        //4, 6, 7,
 
         // front
-        0, 1, 5,
-        0, 5, 4,
+        //0, 1, 5,
+        //0, 5, 4,
 
         // back
-        3, 2, 6,
-        3, 6, 7,
+        //3, 2, 6,
+        //3, 6, 7,
 
         // left
-        1, 2, 6,
-        1, 6, 5,
+        //1, 2, 6,
+        //1, 6, 5,
 
         // right
-        0, 4, 7,
-        0, 7, 3,
+        //0, 4, 7,
+        //0, 7, 3,
     },
     }};
+
+    auto const texture = gl::Texture{
+    gl::TextureSource::File{ // Peut être un fichier, ou directement un tableau de pixels
+        .path           = "res/texture.png",
+        .flip_y         = true, // Il n'y a pas de convention universelle sur la direction de l'axe Y. Les fichiers (.png, .jpeg) utilisent souvent une direction différente de celle attendue par OpenGL. Ce booléen flip_y est là pour inverser la texture si jamais elle n'apparaît pas dans le bon sens.
+        .texture_format = gl::InternalFormat::RGBA8, // Format dans lequel la texture sera stockée. On pourrait par exemple utiliser RGBA16 si on voulait 16 bits par canal de couleur au lieu de 8. (Mais ça ne sert à rien dans notre cas car notre fichier ne contient que 8 bits par canal, donc on ne gagnerait pas de précision). On pourrait aussi stocker en RGB8 si on ne voulait pas de canal alpha. On utilise aussi parfois des textures avec un seul canal (R8) pour des usages spécifiques.
+    },
+    gl::TextureOptions{
+        .minification_filter  = gl::Filter::Linear, // Comment on va moyenner les pixels quand on voit l'image de loin ?
+        .magnification_filter = gl::Filter::Linear, // Comment on va interpoler entre les pixels quand on zoom dans l'image ?
+        .wrap_x               = gl::Wrap::Repeat,   // Quelle couleur va-t-on lire si jamais on essaye de lire en dehors de la texture ?
+        .wrap_y               = gl::Wrap::Repeat,   // Idem, mais sur l'axe Y. En général on met le même wrap mode sur les deux axes.
+    }
+};
 
     auto const cameraShader = gl::Shader{{
     .vertex   = gl::ShaderSource::File{"res/cameraVertex.glsl"},
@@ -77,5 +91,6 @@ int main()
         cameraShader.bind();
 
         cameraShader.set_uniform("view_projection_matrix", projection_matrix * view_matrix);
+        cameraShader.set_uniform("my_texture", texture);
     }
 }
