@@ -19,9 +19,9 @@ int main()
         .layout = {gl::VertexAttribute::Position2D{0}, gl::VertexAttribute::UV{1}},
         .data   = {
             -2.f, -2.f, 0.f, 0.f,// -1.f, // 0
-            +2.f, -2.f, 1.f, 0.f,// -1.f,// 1
-            +2.f, +2.f, 1.f, 1.f,// -1.f,// 2
-            -2.f, +2.f, 0.f, 1.f,// -1.f, // 3
+            +2.f, -2.f, 30.f, 0.f,// -1.f,// 1
+            +2.f, +2.f, 30.f, 30.f,// -1.f,// 2
+            -2.f, +2.f, 0.f, 30.0f,// -1.f, // 3
 
             //-1.f, -1.f, 1.f, // 0
             //+1.f, -1.f, 1.f,// 1
@@ -65,8 +65,8 @@ int main()
     gl::TextureOptions{
         .minification_filter  = gl::Filter::Linear, // Comment on va moyenner les pixels quand on voit l'image de loin ?
         .magnification_filter = gl::Filter::Linear, // Comment on va interpoler entre les pixels quand on zoom dans l'image ?
-        .wrap_x               = gl::Wrap::Repeat,   // Quelle couleur va-t-on lire si jamais on essaye de lire en dehors de la texture ?
-        .wrap_y               = gl::Wrap::Repeat,   // Idem, mais sur l'axe Y. En général on met le même wrap mode sur les deux axes.
+        .wrap_x               = gl::Wrap::MirroredRepeat,   // Quelle couleur va-t-on lire si jamais on essaye de lire en dehors de la texture ?
+        .wrap_y               = gl::Wrap::MirroredRepeat,   // Idem, mais sur l'axe Y. En général on met le même wrap mode sur les deux axes.
     }
 };
 
