@@ -3,10 +3,13 @@
 #include "../../src/Camera.hpp"
 #include "../../src/EventsCallbacks.hpp"
 #include "../../src/Mesh.hpp"
+#include "../../src/RenderTarget.hpp"
 #include "../../src/Shader.hpp"
+#include "../../src/Texture.hpp"
 #include "../../src/make_absolute_path.hpp"
 #include "glad/gl.h"
 #include "glm/glm.hpp"
+#include "tiny_obj_loader.h"
 
 namespace gl {
 
@@ -29,6 +32,7 @@ auto window_height_in_screen_coordinates() -> int;
 auto window_aspect_ratio() -> float;
 
 auto time_in_seconds() -> float;
+auto delta_time_in_seconds() -> float;
 
 void bind_default_shader();
 auto sphere_vertices();

@@ -10,7 +10,7 @@ set(WARNINGS_AS_ERRORS_FOR_OPENGL_FRAMEWORK OFF CACHE BOOL "ON iff you want to t
 if(MSVC)
     target_compile_options(opengl_framework PRIVATE /W4)
 else()
-    target_compile_options(opengl_framework PRIVATE -Wall -Wextra -Wpedantic -pedantic-errors -Wconversion -Wsign-conversion)
+    target_compile_options(opengl_framework PRIVATE -Wall -Wextra -Wpedantic -pedantic-errors -Wconversion -Wsign-conversion -Wimplicit-fallthrough)
 endif()
 
 # Maybe enable warnings as errors
@@ -32,12 +32,15 @@ add_subdirectory(lib/glm)
 target_link_libraries(opengl_framework PUBLIC glm)
 
 # # ---Add img---
-# add_subdirectory(lib/img)
-# target_link_libraries(opengl_framework PUBLIC img::img)
+add_subdirectory(lib/img)
+target_link_libraries(opengl_framework PUBLIC img::img)
 
 # ---Add exe_path---
 add_subdirectory(lib/exe_path)
 target_link_libraries(opengl_framework PRIVATE exe_path::exe_path)
+
+# ---Add tinyobjloader---
+target_include_directories(opengl_framework PUBLIC lib/tinyobjloader)
 
 # ---Add glfw---
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)

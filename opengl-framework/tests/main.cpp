@@ -14,7 +14,7 @@ int main()
     });
 
     // TODO talk about default coordinates, and that they stretch with window : we will fix this by writing our own shader
-    auto triangle_mesh = gl::Mesh{{
+    auto const triangle_mesh = gl::Mesh{{
         .vertex_buffers = {{
             .layout = {gl::VertexAttribute::Position3D{0 /*must match the layout index in the shader*/}},
             .data   = {
@@ -53,7 +53,7 @@ int main()
         },
     }};
 
-    auto shader = gl::Shader{{
+    auto const shader = gl::Shader{{
         .vertex   = gl::ShaderSource::File{"res/vertex.glsl"},
         .fragment = gl::ShaderSource::File{"res/fragment.glsl"},
     }};

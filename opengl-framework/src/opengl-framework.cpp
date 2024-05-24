@@ -15,6 +15,9 @@ namespace {
 struct Context { // NOLINT(*special-member-functions)
     GLFWwindow*                      window{nullptr};
     std::vector<gl::EventsCallbacks> events_callbacks{};
+    float                            last_time{0.f};
+    float                            delta_time{0.f};
+    bool                             is_first_frame{true};
 
     ~Context()
     {
@@ -205,8 +208,14 @@ auto window_is_open() -> bool
 {
     assert_init_has_been_called();
 
+    float const time = time_in_seconds();
+    if (!context().is_first_frame)
+        context().delta_time = time - context().last_time;
+    context().last_time = time;
+
     glfwSwapBuffers(context().window);
     glfwPollEvents();
+    context().is_first_frame = false;
     return !glfwWindowShouldClose(context().window);
 }
 
@@ -257,6 +266,11 @@ auto time_in_seconds() -> float
     return static_cast<float>(glfwGetTime());
 }
 
+auto delta_time_in_seconds() -> float
+{
+    return context().delta_time;
+}
+
 static auto default_shader() -> Shader&
 {
     static auto instance = Shader{{
@@ -275,7 +289,7 @@ out vec4 out_color;
 
 void main()
 {
-    out_color = vec4(1.f);
+    out_color = vec4(1.);
 }
 )GLSL"},
     }};
