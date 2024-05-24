@@ -17,21 +17,42 @@ int main()
     .vertex_buffers = {{
         .layout = {gl::VertexAttribute::Position3D{0}},
         .data   = {
-            -0.5f, -0.5f, 0.f, // Position2D du 1er sommet
-            +0.5f, -0.5f, 0.f,// Position2D du 2ème sommet
-            +0.5f, +0.5f, 0.f,// Position2D du 3ème sommet
-            -0.5f, +0.5f, 0.f  // Position2D du 4ème sommet
+            -1.f, -1.f, -1.f, // 0
+            +1.f, -1.f, -1.f,// 1
+            +1.f, +1.f, -1.f,// 2
+            -1.f, +1.f, -1.f, // 3
+
+            -1.f, -1.f, +1.f, // 4
+            +1.f, -1.f, +1.f,// 5
+            +1.f, +1.f, +1.f,// 6
+            -1.f, +1.f, +1.f  // 7
         },
     }},
     .index_buffer   = {
-        0, 1, 2, // Indices du premier triangle : on utilise le 1er, 2ème et 3ème sommet
-        0, 2, 3  // Indices du deuxième triangle : on utilise le 1er, 3ème et 4ème sommet
-    },
-    }};
+        // bottom
+        0, 1, 2,
+        0, 2, 3,
 
-    auto const shader = gl::Shader{{
-    .vertex   = gl::ShaderSource::File{"res/vertex.glsl"},
-    .fragment = gl::ShaderSource::File{"res/fragment.glsl"},
+        // top
+        4, 5, 6,
+        4, 6, 7,
+
+        // front
+        0, 1, 5,
+        0, 5, 4,
+
+        // back
+        3, 2, 6,
+        3, 6, 7,
+
+        // left
+        1, 2, 6,
+        1, 6, 5,
+
+        // right
+        0, 3, 7,
+        0, 7, 2
+    },
     }};
 
     auto const cameraShader = gl::Shader{{
@@ -42,7 +63,7 @@ int main()
     while (gl::window_is_open())
     {
         // Rendu à chaque frame
-        glClearColor(0.1f, 0.1f, 0.15f, 1.f); // Choisis la couleur à utiliser. Les paramètres sont R, G, B, A avec des valeurs qui vont de 0 à 1
+        glClearColor(0.5f, 0.5f, 0.7f, 1.f); // Choisis la couleur à utiliser. Les paramètres sont R, G, B, A avec des valeurs qui vont de 0 à 1
         glClear(GL_COLOR_BUFFER_BIT); // Exécute concrètement l'action d'appliquer sur tout l'écran la couleur choisie au-dessus
 
         rectangle_mesh.draw();

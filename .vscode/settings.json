@@ -4,5 +4,6 @@
         "xiosbase": "cpp",
         "xlocale": "cpp",
         "xutility": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 }
