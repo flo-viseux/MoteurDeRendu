@@ -8,7 +8,7 @@ void main()
 {
     vec4 texture_color = texture(my_texture, uv);
 
-    //float4 color = tex.Sample(samp, input.Tex);
+    // calibrage des effets ici
     float grey = dot(texture_color.rgb, vec3(.5, .5, .5));
     vec4 mask = vec4(1, 0, 0, 1);
 
