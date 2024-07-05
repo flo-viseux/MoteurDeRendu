@@ -131,22 +131,27 @@ int main()
 
     while (gl::window_is_open())
     {
-        glClearColor(.5f, .5f, .5f, 1.f); // Dessine du rouge, non pas à l'écran, mais sur notre render target
+        glClearColor(.1f, .1f, .1f, 1.f); // Dessine du rouge, non pas à l'écran, mais sur notre render target
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 const view_matrix = camera.view_matrix();
 
         glm::mat4 const projection_matrix = glm::infinitePerspective(1.f /*field of view in radians*/, gl::framebuffer_aspect_ratio() /*aspect ratio*/, 0.001f /*near plane*/);
 
+        glm::mat4 const transformation_matrix = glm::mat4(1.f);
+
 
         cameraShader.bind();
         cameraShader.set_uniform("view_projection_matrix", projection_matrix * view_matrix);
 
         glm::vec3 lightDir = glm::normalize(glm::vec3(0.2f, 0.3f, -1.0f));
+        glm::vec3 lightPos = glm::vec3(1.f, 0.f, 0.5f);
         boatShader.bind();
         boatShader.set_uniform("view_projection_matrix", projection_matrix * view_matrix);
+        boatShader.set_uniform("transformation_matrix", transformation_matrix);
         boatShader.set_uniform("my_texture", fourareenTexture);
         boatShader.set_uniform("light_direction", lightDir);
+        boatShader.set_uniform("light_position", lightPos);
 
         boat_Mesh.draw();
     }
