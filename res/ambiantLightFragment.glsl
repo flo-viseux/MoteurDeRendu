@@ -16,7 +16,7 @@ void main() {
     vec3 light_dir_vs = normalize(mat3(inverse(mat3(1.0))) * light_direction);
     
     // Calculer l'éclairage diffus
-    float diffuse = dot(-light_dir_vs, normal);
+    float diffuse = max(dot(-light_dir_vs, normal), 0.3);
     
     // Couleur de base (albedo)
     vec3 albedo = vec3(1.0, 1.0, 1.0);

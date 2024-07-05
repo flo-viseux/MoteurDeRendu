@@ -129,6 +129,11 @@ int main()
     .fragment = gl::ShaderSource::File{"res/lightFragment.glsl"},
     }};
 
+    auto const ambiantLightShader = gl::Shader{{
+    .vertex   = gl::ShaderSource::File{"res/ambiantLightVertex.glsl"},
+    .fragment = gl::ShaderSource::File{"res/ambiantLightFragment.glsl"},
+    }};
+
     auto const boatShader = gl::Shader{{
     .vertex   = gl::ShaderSource::File{"res/boatVertex.glsl"},
     .fragment = gl::ShaderSource::File{"res/boatFragment.glsl"},
@@ -149,10 +154,11 @@ int main()
 
 
         lightShader.bind();
-        // Mettre à jour les uniforms du shader ici
         glm::vec3 lightDir = glm::normalize(glm::vec3(0.2f, 0.3f, -1.0f));
         lightShader.set_uniform("light_direction", lightDir);
 
+        ambiantLightShader.bind();
+        ambiantLightShader.set_uniform("light_direction", lightDir);
 
         boatShader.bind();
         boatShader.set_uniform("view_projection_matrix", projection_matrix * view_matrix);
