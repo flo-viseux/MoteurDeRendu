@@ -2,6 +2,7 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "tiny_obj_loader.h"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
 
 int main()
 {
@@ -129,6 +130,9 @@ int main()
     .fragment = gl::ShaderSource::File{"res/boatFragment.glsl"},
     }};
 
+    float rotationAngle = 0.0f;
+    float rotationSpeed = 0.01f;
+
     while (gl::window_is_open())
     {
         glClearColor(.1f, .1f, .1f, 1.f); // Dessine du rouge, non pas à l'écran, mais sur notre render target
@@ -138,7 +142,12 @@ int main()
 
         glm::mat4 const projection_matrix = glm::infinitePerspective(1.f /*field of view in radians*/, gl::framebuffer_aspect_ratio() /*aspect ratio*/, 0.001f /*near plane*/);
 
-        glm::mat4 const transformation_matrix = glm::mat4(1.f);
+
+        rotationAngle += rotationSpeed;
+        // Créez une matrice de rotation autour de l'axe Y (pour une rotation horizontale)
+        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), rotationAngle, glm::vec3(1.0f, 0.0f, 0.0f));
+
+        glm::mat4 const transformation_matrix = rotationMatrix;
 
 
         cameraShader.bind();
@@ -152,6 +161,7 @@ int main()
         boatShader.set_uniform("my_texture", fourareenTexture);
         boatShader.set_uniform("light_direction", lightDir);
         boatShader.set_uniform("light_position", lightPos);
+
 
         boat_Mesh.draw();
     }
