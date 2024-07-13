@@ -31,5 +31,8 @@ void main()
     vec3 color = albedo * diffuse;
 
     vec4 texture_color = texture(my_texture, uv);
-    out_color = texture_color * vec4(color * ponctualLightIntensity, 1);
+
+    vec3 lightColor = vec3(1.0, 0.0, 1.0);
+
+    out_color = texture_color * vec4(color * (ponctualLightIntensity * lightColor), 1);
 }
